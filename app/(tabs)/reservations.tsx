@@ -110,12 +110,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   mapContainer: {
-    height: 400, // Adjust the height as needed
+    height: '100%', // Adjust the height as needed
     width: '100%',
     marginTop: 20,
   },
   map: {
-    height: 500,
+    height: '100%',
     width: '100%',
   },
   listView: {
