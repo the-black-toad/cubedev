@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "HelloWorld",
-    "slug": "expo-template-default",
+    "name": "CubeDev",
+    "slug": "cubedev",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,13 +13,15 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.toadman.cubedev"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.toadman.cubedev"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +33,18 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "92d032a3-af74-459b-9a17-ca2fa9ddd0eb"
+      }
+    },
+    "owner": "toadman",
+    "updates": {
+      "url": "https://u.expo.dev/92d032a3-af74-459b-9a17-ca2fa9ddd0eb"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
