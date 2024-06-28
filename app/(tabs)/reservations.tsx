@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button, SafeAreaView, ScrollView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-
+import mapStyle from '../../components/mapStyle.json'
 import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -43,18 +43,16 @@ export default function ReservationsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title" style={styles.title}>Search for available cubes</ThemedText>
-          <View style={styles.buttonContainer}>
-            <Button
-              title={`Switch to ${view === 'map' ? 'List View' : 'Map View'}`}
-              onPress={() => setView(view === 'map' ? 'list' : 'map')}
-            />
-          </View>
+          {/* container for the title */}
+          <ThemedText type="title" style={styles.title}>Cube Map</ThemedText>
+       
         </ThemedView>
+        {/*container for the map */}
         <View style={styles.container}>
           {view === 'map' ? (
             <MapView
-              style={styles.map}
+              style={styles.map} customMapStyle={mapStyle}
+
               initialRegion={{
                 latitude: 37.78825,
                 longitude: -122.4324,
@@ -70,6 +68,7 @@ export default function ReservationsScreen() {
                   description={cube.description}
                 />
               ))}
+       
             </MapView>
           ) : (
             <View style={styles.listView}>
@@ -82,6 +81,13 @@ export default function ReservationsScreen() {
               ))}
             </View>
           )}
+        </View>
+        <View style={styles.mapOverlay}>
+          {/* container for the button */}
+            <Button
+              title={`${view === 'map' ? 'List View' : 'Map View'}`}
+              onPress={() => setView(view === 'map' ? 'list' : 'map')}
+            />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -107,6 +113,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 8,
+    marginBottom: 8,
   },
   mapContainer: {
     height: '100%', // Adjust the height as needed
@@ -116,6 +123,20 @@ const styles = StyleSheet.create({
   map: {
     height: '100%',
     width: '100%',
+    flex: 1,
+  },
+  mapOverlay: {
+    position: "absolute",
+    bottom: 50,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderRadius: 100,
+    borderColor: '#4D9EE6',
+    padding: 16,
+    left: "35%",
+    width: "35%",
+    textAlign: "center"
+
   },
   listView: {
     flex: 1,
