@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button, SafeAreaView, ScrollView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import mapStyle from '../../components/mapStyle.json'
 import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -44,14 +43,15 @@ export default function ReservationsScreen() {
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <ThemedView style={styles.titleContainer}>
           {/* container for the title */}
-          <ThemedText type="title" style={styles.title}>Cube Map</ThemedText>
+          <ThemedText type="title" style={styles.title}>CUBE MAP</ThemedText>
        
         </ThemedView>
+   
         {/*container for the map */}
         <View style={styles.container}>
           {view === 'map' ? (
             <MapView
-              style={styles.map} customMapStyle={mapStyle}
+              style={styles.map}
 
               initialRegion={{
                 latitude: 37.78825,
