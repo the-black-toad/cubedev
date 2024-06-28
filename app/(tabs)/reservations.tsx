@@ -80,7 +80,6 @@ export default function ReservationsScreen() {
                   <ThemedText type="default">{cube.description}</ThemedText>
                 </View>
               ))}
-              <HelloWave />
             </View>
           )}
         </View>
