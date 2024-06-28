@@ -18,10 +18,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
+    marginTop: 50,
+    height: 360,
+    width: 400,
+    bottom: 10,
     left: 0,
-    position: 'absolute',
+    position: 'relative',
   },
 });
