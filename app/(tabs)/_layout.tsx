@@ -35,7 +35,7 @@ export default function TabLayout() {
         options={{
           title: 'Key',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'key' : 'key-outline'} color={color} />
+            <TabBarIcon name={focused ? 'cube' : 'cube-outline'} color={color} />
           ),
         }}
       />
@@ -44,7 +44,7 @@ export default function TabLayout() {
         options={{
           title: 'Account',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'menu' : 'menu-outline'} color={color} />
+            <TabBarIcon name={focused ? 'person-circle-outline' : 'person-circle-outline'} color={color} />
           ),
         }}
       />
