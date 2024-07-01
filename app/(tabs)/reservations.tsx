@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, View, Button, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { HelloWave } from '@/components/HelloWave';
 import { ThemedText } from '@/components/ThemedText';
@@ -20,6 +20,9 @@ const fetchCubeData = async (): Promise<CubeData[]> => {
   return [
     { id: 1, latitude: 37.78825, longitude: -122.4324, title: 'Cube 1', description: 'Description 1' },
     { id: 2, latitude: 37.75825, longitude: -122.4524, title: 'Cube 2', description: 'Description 2' },
+    { id: 3, latitude: 37.72825, longitude: -122.4524, title: 'Cube 3', description: 'Description 3' },
+    { id: 4, latitude: 37.69825, longitude: -122.4524, title: 'Cube 4', description: 'Description 4' },
+    { id: 5, latitude: 37.66825, longitude: -122.4524, title: 'Cube 5', description: 'Description 5' },
     // Add more cube data as needed
   ];
 };
@@ -71,15 +74,20 @@ export default function ReservationsScreen() {
        
             </MapView>
           ) : (
-            <View style={styles.listView}>
-              {/* Replace with your list view component or content */}
-              {cubeData.map(cube => (
-                <View key={cube.id} style={styles.listItem}>
-                  <ThemedText type="default">{cube.title}</ThemedText>
-                  <ThemedText type="default">{cube.description}</ThemedText>
-                </View>
-              ))}
-            </View>
+           
+            <SafeAreaView style={styles.scrollContainer}>
+              <ThemedText type="title"> Cubes to rent: </ThemedText> 
+                <ScrollView>
+                       {cubeData.map(cube => (
+                          <View key={cube.id} style={styles.listItem}>
+                            
+                            <ThemedText type="default">{cube.title}</ThemedText>
+                            <ThemedText type="default">{cube.description}</ThemedText>
+                            
+                          </View>
+                        ))}
+                </ScrollView>
+            </SafeAreaView>
           )}
         </View>
         <View style={styles.mapOverlay}>
@@ -142,10 +150,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   listItem: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  scrollContainer: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+  }
 });
