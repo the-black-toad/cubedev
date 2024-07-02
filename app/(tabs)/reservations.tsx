@@ -4,6 +4,7 @@ import MapView, { Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import SearchBar from '@/components/SearchBar';
 
 // Define a type for the cube data
 interface CubeData {
@@ -52,6 +53,7 @@ export default function ReservationsScreen() {
   const [cubeData, setCubeData] = useState<CubeData[]>([]);
   const [initialRegion, setInitialRegion] = useState<Region | null>(null);
   const [loading, setLoading] = useState(true);
+  const [filteredCubeData, setFilteredCubeData] = useState<CubeData[]>([]);
 
   //Using callback to only call functions once and save data instead of each time it renders
   const loadData = useCallback(async () => {
@@ -96,14 +98,25 @@ export default function ReservationsScreen() {
       // Sort cubes by distance
       updatedCubeData.sort((a, b) => a.distance - b.distance);
       setCubeData(updatedCubeData);
+      setFilteredCubeData(updatedCubeData);
     }
   }, [initialRegion]);
+
+
+  const handleSearch = (searchText: string) => {
+    // Existing search logic to filter cubeData based on searchText
+  
+  
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>CUBE MAP</ThemedText>
       </ThemedView>
+      
+      <SearchBar onSearch={handleSearch} />
+
       <View style={styles.container}>
         {loading ? (
           <View style={styles.loadingContainer}>
@@ -151,6 +164,7 @@ export default function ReservationsScreen() {
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   safeArea: {
