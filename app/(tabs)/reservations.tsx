@@ -113,9 +113,10 @@ export default function ReservationsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>CUBE MAP</ThemedText>
+        
+      <SearchBar onSearch={handleSearch} />
       </ThemedView>
       
-      <SearchBar onSearch={handleSearch} />
   
       <View style={styles.container}>
         
