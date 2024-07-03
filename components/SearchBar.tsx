@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import { TabBarIcon } from './navigation/TabBarIcon';
 
 interface CubeData {
   id: number;
@@ -14,6 +15,7 @@ interface SearchBarProps {
   onSearch: (searchText: string) => void;
 }
 
+
 class SearchBar extends Component<SearchBarProps> {
   state = {
     searchText: '',
@@ -23,18 +25,21 @@ class SearchBar extends Component<SearchBarProps> {
     this.setState({ searchText: text });
     this.props.onSearch(text);
   };
-
+  
   render() {
     const { searchText } = this.state;
 
     return (
       <View style={styles.container}>
+        <TabBarIcon name={'search'} size={15} color={"#999"} style={styles.icon}/>
         <TextInput
           style={styles.input}
           placeholder="Search Cubes"
+          placeholderTextColor="#999"
           onChangeText={this.handleSearchChange}
           value={searchText}
         />
+     
       </View>
     );
   }
@@ -42,14 +47,21 @@ class SearchBar extends Component<SearchBarProps> {
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
     backgroundColor: '#f5f5f5',
     borderRadius: 10,
   },
   input: {
-    height: 35,
-    padding: 8,
+    flex: 1,
+    height: 25,
+    padding: 4,
+    color: "#000000",
   },
+  icon :{
+    marginRight: 10, 
+  }
 });
 
 export default SearchBar;

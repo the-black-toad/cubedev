@@ -116,8 +116,9 @@ export default function ReservationsScreen() {
       </ThemedView>
       
       <SearchBar onSearch={handleSearch} />
-
+  
       <View style={styles.container}>
+        
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#0000ff" />
@@ -129,6 +130,8 @@ export default function ReservationsScreen() {
               showsUserLocation={true}
               initialRegion={initialRegion}
             >
+          
+
               {cubeData.map(cube => (
                 <Marker
                   key={cube.id}
