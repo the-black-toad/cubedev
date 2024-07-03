@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { TabBarIcon } from './navigation/TabBarIcon';
 
+
 interface CubeData {
   id: number;
   latitude: number;
@@ -29,6 +30,7 @@ class SearchBar extends Component<SearchBarProps> {
   render() {
     const { searchText } = this.state;
 
+    // organizing the search bar components 
     return (
       <View style={styles.container}>
         <TabBarIcon name={'search'} size={15} color={"#999"} style={styles.icon}/>
@@ -44,7 +46,7 @@ class SearchBar extends Component<SearchBarProps> {
     );
   }
 }
-
+// need to have things align center and flex 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

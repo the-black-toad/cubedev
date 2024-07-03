@@ -113,13 +113,12 @@ export default function ReservationsScreen() {
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>CUBE MAP</ThemedText>
-        
+      {/*Search Bar inside the header  */}
       <SearchBar onSearch={handleSearch} />
       </ThemedView>
       
-  
-      <View style={styles.container}>
-        
+      {/*Map container*/}
+      <View style={styles.container}>        
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#0000ff" />
@@ -144,9 +143,10 @@ export default function ReservationsScreen() {
             </MapView>
           )
         )}
+        {/*List View*/}
         {view === 'list' && (
           <SafeAreaView style={styles.scrollContainer}>
-            <ThemedText type="title">Cubes to rent:</ThemedText>
+            <ThemedText type="title" style={styles.title}>Cubes to rent:</ThemedText>
             <ScrollView>
               {cubeData.map(cube => (
                 <View key={cube.id} style={styles.listItem}>
@@ -159,6 +159,7 @@ export default function ReservationsScreen() {
           </SafeAreaView>
         )}
       </View>
+      {/*Button*/}
       <View style={styles.mapOverlay}>
         <Button
           title={view === 'map' ? 'List View' : 'Map View'}
