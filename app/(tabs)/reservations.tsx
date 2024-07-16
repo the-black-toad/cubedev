@@ -304,8 +304,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#e0e0e0',
     paddingVertical: 10,
-    borderColor: '#4D9EE6',
-    borderWidth: 2,
     borderTopLeftRadius: 30, // More rounded top corners
     borderTopRightRadius: 30, // More rounded top corners
   },
