@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { StyleSheet, View, Button, SafeAreaView, ScrollView, StatusBar, Alert, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, View, Button, SafeAreaView, ScrollView, StatusBar, Alert, ActivityIndicator, Image, TouchableOpacity  } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { ThemedText } from '@/components/ThemedText';
@@ -139,6 +139,17 @@ export default function ReservationsScreen() {
   
   };
 
+  // Function to handle booking the closest cube
+  const handleBookNow = () => {
+    if (filteredCubeData.length > 0) {
+      const closestCube = filteredCubeData[0]; // Assuming filteredCubeData is sorted by distance
+      Alert.alert(`Book Now - ${closestCube.title}`, `Cube Closest To You\nDistance: ${closestCube.distance.toFixed(2)} miles`);
+      // Implement booking logic here
+    } else {
+      Alert.alert('No cubes found', 'Please wait until cubes are loaded or search again.');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.titleContainer}>
@@ -155,20 +166,32 @@ export default function ReservationsScreen() {
           </View>
         ) : (
            initialRegion && (
-            <MapView
-              style={styles.map}
-              showsUserLocation={true}
-              initialRegion={initialRegion}
-            >
-              {cubeData.map(cube => (
-                <Marker
-                  key={cube.id}
-                  coordinate={{ latitude: cube.latitude, longitude: cube.longitude }}
-                  title={cube.title}
-                  description={cube.description}
-                />
-              ))}
-            </MapView>
+            <React.Fragment>
+                <MapView
+                  style={styles.map}
+                  showsUserLocation={true}
+                  initialRegion={initialRegion}
+                >
+                  {cubeData.map(cube => (
+                    <Marker
+                      key={cube.id}
+                      coordinate={{ latitude: cube.latitude, longitude: cube.longitude }}
+                      title={cube.title}
+                      description={cube.description}
+                    />
+                  ))}
+                </MapView>
+                {/* Book Now button */}
+                <TouchableOpacity style={styles.bookNowButton} onPress={handleBookNow}>
+                  <ThemedText type="default" style={styles.bookNowText}>Book Now</ThemedText>
+                  {filteredCubeData.length > 0 && (
+                    <React.Fragment>
+                      <ThemedText type="default" style={styles.bookNowText}>Cube Closest To You</ThemedText>
+                      <ThemedText type="default" style={styles.bookNowText}>Distance: {filteredCubeData[0].distance.toFixed(2)} miles</ThemedText>
+                    </React.Fragment>
+                  )}
+                </TouchableOpacity>
+              </React.Fragment>
           )
         )}
         {/*List View*/}
@@ -284,7 +307,27 @@ const styles = StyleSheet.create({
   cubesNearYouText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
-    marginLeft: 10,
+    marginBottom: 3,
+    marginLeft: 3,
+  },
+
+  bookNowButton: {
+    position: 'absolute',
+    top: 10,
+    alignSelf: 'center',
+    backgroundColor: '#4D9EE6',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    width: '90%',
+    height: 70,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  bookNowText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
