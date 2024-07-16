@@ -76,10 +76,12 @@ export default function ReservationsScreen() {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
           Alert.alert('Permission to access location was denied');
+          useDefaultRegion();
           return;
         }
   
         let location = await Location.getCurrentPositionAsync({});
+        
         setInitialRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -89,12 +91,7 @@ export default function ReservationsScreen() {
         //Once we fetch the users location we will set the loading screen to false so the real map will load
         setLoading(false);
       } catch (error) {
-        setInitialRegion({
-          latitude: 1,
-          longitude: 1,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
+        useDefaultRegion();
         Alert.alert('Error', 'Failed to get current location');
       }
     })();
@@ -112,7 +109,7 @@ export default function ReservationsScreen() {
         ...cube,
         distance: calculateDistance(initialRegion.latitude, initialRegion.longitude, cube.latitude, cube.longitude),
       }));
-      // Sort cubes by distance
+      // Sort cubes by distance, though we may be able to calculate this on the backend
       updatedCubeData.sort((a, b) => a.distance - b.distance);
       setCubeData(updatedCubeData);
       setFilteredCubeData(updatedCubeData);
@@ -122,6 +119,14 @@ export default function ReservationsScreen() {
     }
   }, [initialRegion, cubeData]);
 
+  const useDefaultRegion = () => {
+    setInitialRegion({
+      latitude: 37.78825,
+      longitude: -122.4524,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  }
 
   const handleSearch = (searchText: string) => {
     // Existing search logic to filter cubeData based on searchText
@@ -172,7 +177,7 @@ export default function ReservationsScreen() {
                   showsUserLocation={true}
                   initialRegion={initialRegion}
                 >
-                  {cubeData.map(cube => (
+                  {filteredCubeData.map(cube => (
                     <Marker
                       key={cube.id}
                       coordinate={{ latitude: cube.latitude, longitude: cube.longitude }}
@@ -187,7 +192,7 @@ export default function ReservationsScreen() {
                   {filteredCubeData.length > 0 && (
                     <React.Fragment>
                       <ThemedText type="default" style={styles.bookNowText}>Cube Closest To You</ThemedText>
-                      <ThemedText type="default" style={styles.bookNowText}>Distance: {filteredCubeData[0].distance.toFixed(2)} miles</ThemedText>
+                      <ThemedText type="default" style={styles.closestCubeDistanceText}>{filteredCubeData[0].distance.toFixed(2)} miles</ThemedText>
                     </React.Fragment>
                   )}
                 </TouchableOpacity>
@@ -213,12 +218,10 @@ export default function ReservationsScreen() {
       </View>
       {/*Button*/}
       <View style={[styles.switchViewsButton, view === 'list' && styles.switchViewsButtonList]}>
-        <View style={{width: '100%' }}>
-          <Button
-            title={view === 'map' ? 'List View' : 'Map View'}
-            onPress={() => setView(view === 'map' ? 'list' : 'map')}
-          />
-        </View>
+        <Button
+          title={view === 'map' ? 'List View' : 'Map View'}
+          onPress={() => setView(view === 'map' ? 'list' : 'map')}
+        />
       </View>
     </SafeAreaView>
   );
@@ -249,17 +252,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     backgroundColor: '#ffffff',
-    borderWidth: 2,
-    borderRadius: 100,
+    borderWidth: 1,
+    borderRadius: 10,
     borderColor: '#4D9EE6',
-    padding: 13,
-    left: '35%',
+    padding: 3,
+    //left: '35%',
+    alignSelf: 'center',
     width: '30%',
     textAlign: 'center',
+    fontSize: 14,
   },
   switchViewsButtonList: {
-    bottom: 'auto',
-    top: 200, // Adjust the distance from the top as needed
+    bottom: 340,
+    
   },
   listItem: {
     padding: 16,
@@ -316,18 +321,22 @@ const styles = StyleSheet.create({
     top: 10,
     alignSelf: 'center',
     backgroundColor: '#4D9EE6',
-    paddingVertical: 10,
+    paddingVertical: 25,
     paddingHorizontal: 20,
     width: '90%',
-    height: 70,
-    borderRadius: 30,
+    height: 69,
+    borderRadius: 600,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
   },
   bookNowText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
+  closestCubeDistanceText: {
+    color: '#fff',
+    fontSize: 12,
+  }
 });
