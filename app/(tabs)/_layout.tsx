@@ -10,19 +10,19 @@ export default function TabLayout() {
 
   return (
     <Tabs 
-      initialRouteName="reservations"
+      initialRouteName="reservationScreens/index"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
         <Tabs.Screen
-        name="reservations"
-        options={{
+          name="reservationScreens"
+          options={{
             title: 'Reservations',
             tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'map' : 'map-outline'} color={color} />
             ),
-        }}
+          }}
         />
       <Tabs.Screen
         name="index"

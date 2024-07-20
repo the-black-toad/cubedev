@@ -138,6 +138,9 @@ export default function ReservationsScreen() {
     if (filteredData.length === 0) {
       // If no matches found, return closest cubes
       filteredData = [...cubeData].sort((a, b) => a.distance - b.distance).slice(0, 5); // Adjust the number of results as needed
+    } else {
+      // If a match is found, move the map to the location of the first matched cube
+      moveToCubeLocation(filteredData[0].latitude, filteredData[0].longitude);
     }
 
     setFilteredCubeData(filteredData);
@@ -153,6 +156,15 @@ export default function ReservationsScreen() {
     } else {
       Alert.alert('No cubes found', 'Please wait until cubes are loaded or search again.');
     }
+  };
+
+  const moveToCubeLocation = (latitude: number, longitude: number) => {
+    setInitialRegion({
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
   };
 
   return (
@@ -317,11 +329,11 @@ const styles = StyleSheet.create({
   bookNowButton: {
     position: 'absolute',
     top: 10,
-    alignSelf: 'center',
+    left: 10,
     backgroundColor: '#4D9EE6',
     paddingVertical: 25,
     paddingHorizontal: 20,
-    width: '90%',
+    width: '45%',
     height: 69,
     borderRadius: 600,
     justifyContent: 'center',
@@ -330,7 +342,7 @@ const styles = StyleSheet.create({
   },
   bookNowText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   closestCubeDistanceText: {
