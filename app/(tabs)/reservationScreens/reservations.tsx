@@ -220,7 +220,7 @@ export default function ReservationsScreen() {
 
                 </MapView>
                 {/* Book Now button */}
-                <TouchableOpacity style={styles.bookNowButton} onPress={handleBookNow}>
+                <TouchableOpacity style={styles.bookNowButton} onPress={e => handleBook(filteredCubeData[0].id)}>
                   <ThemedText type="default" style={styles.bookNowText}>Book Now</ThemedText>
                   {filteredCubeData.length > 0 && (
                     <React.Fragment>
@@ -240,11 +240,13 @@ export default function ReservationsScreen() {
             <ScrollView horizontal>
               {filteredCubeData.map(cube => (
                 <View key={cube.id} style={styles.listItem}>
+                  <TouchableOpacity onPress={e => handleBook(cube.id)}>
                   <Image source={{ uri: cube.imageUrl }} style={styles.cubeImage} />
+                  </TouchableOpacity>
                   <ThemedText type="default" style={styles.cubeTitle}>{cube.title}</ThemedText>
                   <ThemedText type="default">{cube.description}</ThemedText>
                   <ThemedText type="default">Distance: {cube.distance.toFixed(2)} miles</ThemedText>
-                  <ThemedText onPress={e => handleBook(cube.id) } > Book Now </ThemedText>
+
                 </View>
               ))}
             </ScrollView>
