@@ -1,7 +1,11 @@
 import { Stack } from 'expo-router'
 
 const AccountScreens = () => {
-    return <Stack />
+    return <Stack 
+        screenOptions={{
+            headerShown: false, // Hides the header
+        }}
+    />
 }
 
 export default AccountScreens;

@@ -1,35 +1,38 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
-
+import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useCubeData } from '../../cubeContext'; // Import useCubeData
 
 //interface CubeSelectedScreenProps {
 //  route: RouteProp<{ params: { cube: CubeData } }>;
 //}
- 
-interface CubeData {
-  id: number;
-  latitude: number;
-  longitude: number;
-  title: string;
-  description: string;
-  distance: number;
-  imageUrl: string;
-}
+
 
 
 export default function CubeSelectedScreen(){
   const { cubeId } = useLocalSearchParams();
- 
+  const { getCubeById } = useCubeData();
+  const cube = getCubeById(Number(cubeId));
+  const router = useRouter();
 
   // Use cubeId here
   console.log(cubeId);
 
+  if (!cube) {
+    return (
+        <View style={styles.container}>
+          <Text>Cube not found</Text>
+          <Button title="Go Back" onPress={() => router.back()} />
+        </View>
+      );
+  }
+
   return (
-    // Your component JSX
-    <View>
-      <Text> "Test" </Text>
+    <View style={styles.container}>
+      <Image source={{ uri: cube.imageUrl }} style={styles.image} />
+      <Text style={styles.title}>{cube.title}</Text>
+      <Text style={styles.description}>{cube.description}</Text>
+      <Text style={styles.distance}>{cube.distance.toFixed(2)} miles away</Text>
     </View>
   );
 }
@@ -73,6 +76,10 @@ const styles = StyleSheet.create({
   distance: {
     fontSize: 16,
     color: 'grey',
+  },
+  errorText: {
+    fontSize: 18,
+    color: 'red',
   },
 });
 
