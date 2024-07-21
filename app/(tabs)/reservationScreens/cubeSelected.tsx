@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import { useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 
-interface CubeSelectedScreenProps {
-  route: RouteProp<{ params: { cube: CubeData } }, 'params'>;
-}
 
+//interface CubeSelectedScreenProps {
+//  route: RouteProp<{ params: { cube: CubeData } }>;
+//}
+ 
 interface CubeData {
   id: number;
   latitude: number;
@@ -16,6 +18,22 @@ interface CubeData {
   imageUrl: string;
 }
 
+
+export default function CubeSelectedScreen(){
+  const { cubeId } = useLocalSearchParams();
+ 
+
+  // Use cubeId here
+  console.log(cubeId);
+
+  return (
+    // Your component JSX
+    <View>
+      <Text> "Test" </Text>
+    </View>
+  );
+}
+/*
 const CubeSelectedScreen: React.FC<CubeSelectedScreenProps> = ({ route }) => {
   const { cube } = route.params;
 
@@ -25,10 +43,11 @@ const CubeSelectedScreen: React.FC<CubeSelectedScreenProps> = ({ route }) => {
       <Text style={styles.title}>{cube.title}</Text>
       <Text style={styles.description}>{cube.description}</Text>
       <Text style={styles.distance}>Distance: {cube.distance.toFixed(2)} miles</Text>
-      {/* Add more details as needed */}
+      }
     </View>
   );
 };
+*/
 
 const styles = StyleSheet.create({
   container: {
@@ -57,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CubeSelectedScreen;
+// export default CubeSelectedScreen;

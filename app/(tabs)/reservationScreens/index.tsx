@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { StyleSheet, View, Button, SafeAreaView, ScrollView, StatusBar, Alert, ActivityIndicator, Image, TouchableOpacity  } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, { Callout, Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import SearchBar from '@/components/SearchBar';
+import { useRouter } from 'expo-router';
 
 // Define a type for the cube data
 interface CubeData {
@@ -26,6 +27,8 @@ const fetchCubeData = async (): Promise<CubeData[]> => {
     { id: 3, latitude: 37.72825, longitude: -122.4524, title: 'Cube 3', description: 'Description 3', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
     { id: 4, latitude: 37.69825, longitude: -122.4524, title: 'Cube 4', description: 'Description 4', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
     { id: 5, latitude: 37.66825, longitude: -122.4524, title: 'Cube 5', description: 'Description 5', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
+    { id: 6, latitude:37.253292, longitude: -76.4788, title: 'Thomas freak shack', description: 'based chuds only', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" }
+    
     // Add more cube data as needed
   ];
 };
@@ -56,6 +59,8 @@ export default function ReservationsScreen() {
   const [loading, setLoading] = useState(true);
   const [filteredCubeData, setFilteredCubeData] = useState<CubeData[]>([]);
   const initialLoad = useRef(true);
+  const router = useRouter();
+  
 
   //Using callback to only call functions once and save data instead of each time it renders
   const loadData = useCallback(async () => {
@@ -64,7 +69,7 @@ export default function ReservationsScreen() {
       setCubeData(data);
       setFilteredCubeData(data);
     } catch (error) {
-      Alert.alert('Error', 'Failed to laod cube data');
+      Alert.alert('Error', 'Failed to load cube data');
     } 
   }, []);
 
@@ -167,6 +172,17 @@ export default function ReservationsScreen() {
     });
   };
 
+  const handleBook = (cubeIdfromMap: number) =>{
+      //router.push('reservationScreens/cubeSelected', { params: { cubeFromMap } });
+      // const router = useRouter();
+      console.log(cubeIdfromMap);
+      router.push({
+      pathname: `/reservationScreens/cubeSelected`,
+      params: { cubeId: cubeIdfromMap },
+    });
+
+    };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ThemedView style={styles.titleContainer}>
@@ -190,13 +206,16 @@ export default function ReservationsScreen() {
                   initialRegion={initialRegion}
                 >
                   {filteredCubeData.map(cube => (
-                    <Marker
-                      key={cube.id}
-                      coordinate={{ latitude: cube.latitude, longitude: cube.longitude }}
-                      title={cube.title}
-                      description={cube.description}
-                    />
+                    
+                    <Marker 
+                    key={cube.id}
+                    coordinate={{ latitude: cube.latitude, longitude: cube.longitude }}
+                    title={cube.title}
+                    description={cube.description}
+                    onCalloutPress={e => handleBook(cube.id)}                  
+                  />                                              
                   ))}
+
                 </MapView>
                 {/* Book Now button */}
                 <TouchableOpacity style={styles.bookNowButton} onPress={handleBookNow}>
@@ -205,6 +224,7 @@ export default function ReservationsScreen() {
                     <React.Fragment>
                       <ThemedText type="default" style={styles.bookNowText}>Cube Closest To You</ThemedText>
                       <ThemedText type="default" style={styles.closestCubeDistanceText}>{filteredCubeData[0].distance.toFixed(2)} miles</ThemedText>
+                      
                     </React.Fragment>
                   )}
                 </TouchableOpacity>
@@ -222,6 +242,7 @@ export default function ReservationsScreen() {
                   <ThemedText type="default" style={styles.cubeTitle}>{cube.title}</ThemedText>
                   <ThemedText type="default">{cube.description}</ThemedText>
                   <ThemedText type="default">Distance: {cube.distance.toFixed(2)} miles</ThemedText>
+                  <ThemedText onPress={e => handleBook(cube.id) } > Book Now </ThemedText>
                 </View>
               ))}
             </ScrollView>
