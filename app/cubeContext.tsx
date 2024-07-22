@@ -8,6 +8,9 @@ interface CubeData {
   description: string;
   distance: number;
   imageUrl: string;
+  roomsAvailable: number; // Add this field
+  pricePerNight: number; // Add this field
+  pricePerHour: number; // Add this field
 }
 
 interface CubeContextProps {

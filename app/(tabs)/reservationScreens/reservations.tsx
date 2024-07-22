@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { StyleSheet, View, Button, SafeAreaView, ScrollView, StatusBar, Alert, ActivityIndicator, Image, TouchableOpacity  } from 'react-native';
-import MapView, { Callout, Marker, Region } from 'react-native-maps';
+import MapView, { Marker, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -17,18 +17,21 @@ interface CubeData {
   description: string;
   distance: number;
   imageUrl: string;
+  roomsAvailable: number;
+  pricePerNight: number;
+  pricePerHour: number;
 }
 
 // Placeholder function to simulate fetching data from a database
 const fetchCubeData = async (): Promise<CubeData[]> => {
   // Simulate an API call to fetch cube data
   return [
-    { id: 1, latitude: 37.78825, longitude: -122.4324, title: 'Cube 1', description: 'Description 1', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
-    { id: 2, latitude: 37.75825, longitude: -122.4524, title: 'Cube 2', description: 'Description 2', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
-    { id: 3, latitude: 37.72825, longitude: -122.4524, title: 'Cube 3', description: 'Description 3', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
-    { id: 4, latitude: 37.69825, longitude: -122.4524, title: 'Cube 4', description: 'Description 4', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
-    { id: 5, latitude: 37.66825, longitude: -122.4524, title: 'Cube 5', description: 'Description 5', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" },
-    { id: 6, latitude:37.253292, longitude: -76.4788, title: 'Thomas freak shack', description: 'based chuds only', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7" }
+    { id: 1, latitude: 37.78825, longitude: -122.4324, title: 'Cube 1', description: 'Description 1', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10  },
+    { id: 2, latitude: 37.75825, longitude: -122.4524, title: 'Cube 2', description: 'Description 2', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10 },
+    { id: 3, latitude: 37.72825, longitude: -122.4524, title: 'Cube 3', description: 'Description 3', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10 },
+    { id: 4, latitude: 37.69825, longitude: -122.4524, title: 'Cube 4', description: 'Description 4', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10 },
+    { id: 5, latitude: 37.66825, longitude: -122.4524, title: 'Cube 5', description: 'Description 5', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10 },
+    { id: 6, latitude:37.253292, longitude: -76.4788, title: 'Thomas freak shack', description: 'based chuds only', distance: 0, imageUrl: "https://th.bing.com/th/id/OIP.n-DGGMe2U9zA7qY4XN1TfQHaJQ?w=130&h=180&c=7&r=0&o=5&pid=1.7", roomsAvailable: 5, pricePerNight: 90, pricePerHour: 10 }
     
     // Add more cube data as needed
   ];
@@ -153,17 +156,6 @@ export default function ReservationsScreen() {
 
     setFilteredCubeData(filteredData);
   
-  };
-
-  // Function to handle booking the closest cube
-  const handleBookNow = () => {
-    if (filteredCubeData.length > 0) {
-      const closestCube = filteredCubeData[0]; // Assuming filteredCubeData is sorted by distance
-      Alert.alert(`Book Now - ${closestCube.title}`, `Cube Closest To You\nDistance: ${closestCube.distance.toFixed(2)} miles`);
-      // Implement booking logic here
-    } else {
-      Alert.alert('No cubes found', 'Please wait until cubes are loaded or search again.');
-    }
   };
 
   const moveToCubeLocation = (latitude: number, longitude: number) => {
