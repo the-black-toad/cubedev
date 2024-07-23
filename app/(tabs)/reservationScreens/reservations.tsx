@@ -211,17 +211,6 @@ export default function ReservationsScreen() {
                   ))}
 
                 </MapView>
-                {/* Book Now button */}
-                <TouchableOpacity style={styles.bookNowButton} onPress={e => handleBook(filteredCubeData[0].id)}>
-                  <ThemedText type="default" style={styles.bookNowText}>Book Now</ThemedText>
-                  {filteredCubeData.length > 0 && (
-                    <React.Fragment>
-                      <ThemedText type="default" style={styles.bookNowText}>Cube Closest To You</ThemedText>
-                      <ThemedText type="default" style={styles.closestCubeDistanceText}>{filteredCubeData[0].distance.toFixed(2)} miles</ThemedText>
-                      
-                    </React.Fragment>
-                  )}
-                </TouchableOpacity>
               </React.Fragment>
           )
         )}
@@ -233,25 +222,30 @@ export default function ReservationsScreen() {
               {filteredCubeData.map(cube => (
                 <View key={cube.id} style={styles.listItem}>
                   <TouchableOpacity onPress={e => handleBook(cube.id)}>
-                  <Image source={{ uri: cube.imageUrl }} style={styles.cubeImage} />
+                    <Image source={{ uri: cube.imageUrl }} style={styles.cubeImage} />
+                    <View style={styles.cubeDetailsContainer}>
+                        <ThemedText type="default" style={styles.cubeTitle}>{cube.title}</ThemedText>
+                        <ThemedText type="default" style={styles.cubeDescription}>{cube.description}</ThemedText>
+                        <ThemedText type="default" style={styles.cubeDescription}>Distance: {cube.distance.toFixed(2)} miles</ThemedText>
+                    </View>
                   </TouchableOpacity>
-                  <ThemedText type="default" style={styles.cubeTitle}>{cube.title}</ThemedText>
-                  <ThemedText type="default">{cube.description}</ThemedText>
-                  <ThemedText type="default">Distance: {cube.distance.toFixed(2)} miles</ThemedText>
-
                 </View>
               ))}
             </ScrollView>
           </View>
         )}
       </View>
-      {/*Button*/}
-      <View style={[styles.switchViewsButton, view === 'list' && styles.switchViewsButtonList]}>
-        <Button
-          title={view === 'map' ? 'List View' : 'Map View'}
-          onPress={() => setView(view === 'map' ? 'list' : 'map')}
-        />
-      </View>
+      {/*Buttons*/}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.bookNowButton, view === 'list' && styles.bookNowButtonList]} onPress={e => handleBook(filteredCubeData[0].id)}>
+            <ThemedText type="default" style={styles.bookNowText}>Book Now</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.switchViewsButton, view === 'list' && styles.switchViewsButtonList]} onPress={() => setView(view === 'map' ? 'list' : 'map')}>
+            <ThemedText type="default" style={styles.switchViewsButtonText}>
+            {view === 'map' ? 'List View' : 'Map View'}
+            </ThemedText>
+        </TouchableOpacity>
+       </View>
     </SafeAreaView>
   );
 }
@@ -278,30 +272,56 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   switchViewsButton: {
-    position: 'absolute',
-    bottom: 30,
     backgroundColor: '#ffffff',
     borderWidth: 1,
     borderRadius: 10,
     borderColor: '#4D9EE6',
     padding: 3,
-    //left: '35%',
-    alignSelf: 'center',
     width: '30%',
     textAlign: 'center',
     fontSize: 14,
   },
   switchViewsButtonList: {
     bottom: 340,
-    
+  },
+  switchViewsButtonText: {
+    color: '#4D9EE6',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 30,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  bookNowButton: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#4D9EE6',
+    padding: 3,
+    width: '30%',
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  bookNowButtonList: {
+    bottom: 340, // Move up when in list view
+  },
+  bookNowText: {
+    color: '#4D9EE6',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   listItem: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
     marginHorizontal: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    width: 150,
+    borderRadius: 40,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -310,16 +330,26 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: 200,
   },
   cubeImage: {
     width: '100%',
-    height: 150,
-    borderRadius: 10,
+    height: 250,
+  },
+  cubeDetailsContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
   },
   cubeTitle: {
     fontWeight: 'bold',
     fontSize: 16,
+    color: '#fff'
+  },
+  cubeDescription: {
+    fontSize: 12,
+    color: '#fff',
   },
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -337,33 +367,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40, // More rounded top corners
   },
   cubesNearYouText: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: 'bold',
-    marginBottom: 3,
-    marginLeft: 10,
+    marginBottom: 15,
+    marginTop: 15,
+    marginLeft: 12,
+    color: '#ffffff',
   },
-
-  bookNowButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    backgroundColor: '#4D9EE6',
-    paddingVertical: 25,
-    paddingHorizontal: 20,
-    width: '45%',
-    height: 69,
-    borderRadius: 600,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1,
-  },
-  bookNowText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  closestCubeDistanceText: {
-    color: '#fff',
-    fontSize: 12,
-  }
 });
