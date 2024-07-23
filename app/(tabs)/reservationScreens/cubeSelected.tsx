@@ -36,10 +36,12 @@ export default function CubeSelectedScreen() {
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.detailsText}>Details:</Text>
-        <Text style={styles.detailItem}>Rooms Available: {cube.roomsAvailable}</Text>
-        <Text style={styles.detailItem}>Distance: {cube.distance.toFixed(2)} Miles</Text>
-        <Text style={styles.detailItem}>Price Per Night: ${cube.pricePerNight}</Text>
-        <Text style={styles.detailItem}>Price Per Hour: ${cube.pricePerHour}</Text>
+        <View style={styles.detailsList}>
+            <Text style={styles.detailItem}>Rooms Available: {cube.roomsAvailable}</Text>
+            <Text style={styles.detailItem}>Distance: {cube.distance.toFixed(2)} Miles</Text>
+            <Text style={styles.detailItem}>Price Per Night: ${cube.pricePerNight}</Text>
+            <Text style={styles.detailItem}>Price Per Hour: ${cube.pricePerHour}</Text>
+        </View>
       </View>
       <View style={styles.amenitiesContainer}>
         <Text style={styles.amenitiesText}>Amenities:</Text>
@@ -89,19 +91,24 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 450,
+    height: 500,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     
   },
   reserveButton: {
     position: 'absolute',
-    bottom: 10,
-    left: 25,
+    bottom: 25,
+    left: 40,
     backgroundColor: '#ffffff',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 7,
+    shadowColor: '#000', // Color of the shadow
+    shadowOffset: { width: 10, height: 10 }, // Offset of the shadow
+    shadowOpacity: 0.2, // Opacity of the shadow
+    shadowRadius: 10, // Radius of the shadow blur
+    elevation: 5, // Android only: elevation of the shadow
   },
   reserveButtonText: {
     color: '#4D9EE6',
@@ -109,27 +116,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   detailsContainer: {
-    width: '90%',
+    width: '85%',
     borderRadius: 10,
-    padding: 10,
+    padding: 5,
     marginTop: 30,
     marginBottom: 20,
+  },
+  detailsList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   detailsText: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    //marginBottom: 10,
     color: '#ffffff',
   },
   detailItem: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 14,
+    marginTop: 15,
+    marginRight: 15,
     color: '#ffffff',
   },
   amenitiesContainer: {
-    width: '90%',
+    width: '85%',
     borderRadius: 10,
-    padding: 10,
+    padding: 5,
   },
   amenitiesText: {
     color: '#ffffff',
@@ -143,7 +155,7 @@ const styles = StyleSheet.create({
   },
   amenity: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 14,
     marginRight: 15,
     marginBottom: 5,
     

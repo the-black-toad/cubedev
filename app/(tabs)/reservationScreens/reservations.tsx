@@ -333,14 +333,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#e0e0e0',
     paddingVertical: 10,
-    borderTopLeftRadius: 30, // More rounded top corners
-    borderTopRightRadius: 30, // More rounded top corners
+    borderTopLeftRadius: 40, // More rounded top corners
+    borderTopRightRadius: 40, // More rounded top corners
   },
   cubesNearYouText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 3,
-    marginLeft: 3,
+    marginLeft: 10,
   },
 
   bookNowButton: {
